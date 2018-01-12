@@ -19,6 +19,13 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven{
+            url 'https://maven.google.com'
+        }
+//        Es necesario para Material Animated Switch
+        maven {
+            url "http://dl.bintray.com/glomadrian/maven"
+        }
     }
 }
 

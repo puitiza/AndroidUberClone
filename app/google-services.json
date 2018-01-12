@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "892700933467",
+    "firebase_url": "https://androidcloneuber.firebaseio.com",
+    "project_id": "androidcloneuber",
+    "storage_bucket": "androidcloneuber.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892700933467:android:1919b1b76a7591a7",
+        "android_client_info": {
+          "package_name": "pe.anthony.androiduberclone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892700933467-qgvolfv9pv6ci30lvuuhl4599dc7ch1r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pe.anthony.androiduberclone",
+            "certificate_hash": "2edd79dfed17e3792e58d17c50aa6f74721e748d"
+          }
+        },
+        {
+          "client_id": "892700933467-fqcrgnhjedmh7qdnoipkk0s28nvfgshu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoZPIeCgbZWy8nX4o4OhZcZ1Vbkp3f7W0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892700933467-fqcrgnhjedmh7qdnoipkk0s28nvfgshu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">AndroidUberClone</string>
+    <string name="Signin">SIGN IN</string>
+    <string name="register">REGISTER</string>
+    <string name="cancel">CANCEL</string>
 </resources>

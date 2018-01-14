@@ -3,8 +3,11 @@ package pe.anthony.androiduberclone;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
+
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +27,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -64,6 +68,7 @@ public class Welcome extends FragmentActivity
     private GoogleMap mMap;
     SupportMapFragment mapFragment;
     Marker mCurrent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,7 +235,6 @@ public class Welcome extends FragmentActivity
             return;
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,mLocationRequest, this);
-//        LocationServices.getFusedLocationProviderClient(this).requestLocationUpdates(mGoogleApiClient,mLastLocation,this);
     }
 
     @Override

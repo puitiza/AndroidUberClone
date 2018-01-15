@@ -3,9 +3,11 @@ package pe.anthony.androiduberclone;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.app.AlertDialog;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -59,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
 //      Inicializo los view del mainActivity
         btnSignIn = findViewById(R.id.btnSignIn);
         btnRegister = findViewById(R.id.btnRegister);
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT){
+            btnRegister.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_register_background_v19));
+        }else{
+            btnRegister.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_register_background));
+        }
         rootLayout = findViewById(R.id.rootLayout);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override

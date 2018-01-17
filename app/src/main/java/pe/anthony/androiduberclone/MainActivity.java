@@ -15,7 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseDatabase db;
     DatabaseReference users;
-
+    private static final int PLAY_SERVICE_RES_REQUEST = 7001;
     @Override
     protected void attachBaseContext(Context newBase) {
 //        Esto es de una libreria para cambiar el tipo de fuente de los text view
@@ -76,7 +79,14 @@ public class MainActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showLoginDialog();
+                if(checkPlayServices()){
+                    showLoginDialog();
+                }else{
+                    GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+                    int resulCode = googleAPI.isGooglePlayServicesAvailable(MainActivity.this);
+                    checkPlayService(resulCode);
+                }
+
             }
         });
     }
@@ -216,5 +226,49 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+    }
+
+        private boolean checkPlayServices() {
+//      Esta funcion es para compromar los play services del dispositivos
+        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        int resulCode = googleAPI.isGooglePlayServicesAvailable(this);
+        if(resulCode != ConnectionResult.SUCCESS){
+            if(googleAPI.isUserResolvableError(resulCode)){
+                googleAPI.getErrorDialog(this, resulCode, PLAY_SERVICE_RES_REQUEST).show();
+            }
+            else{
+                Toast.makeText(this,"This device is not supported",Toast.LENGTH_SHORT).show();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private void checkPlayService(int PLAY_SERVICE_STATUS)
+    {
+        /*Esta funcion fue creada para manejar mejor  la respuesta para comprobar si esta actualizado los services de google play*/
+        switch (PLAY_SERVICE_STATUS)
+        {
+            case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
+                Toast.makeText(this,"please udpate your google play service",Toast.LENGTH_SHORT).show();
+                break;
+            case ConnectionResult.API_UNAVAILABLE:
+                //API is not available
+                break;
+            case ConnectionResult.NETWORK_ERROR:
+                //Network error while connection
+                break;
+            case ConnectionResult.RESTRICTED_PROFILE:
+                //Profile is restricted by google so can not be used for play services
+                break;
+            case ConnectionResult.SERVICE_MISSING:
+                //service is missing
+                break;
+            case ConnectionResult.SIGN_IN_REQUIRED:
+                //service available but user not signed in
+                break;
+            case ConnectionResult.SUCCESS:
+                break;
+        }
     }
 }

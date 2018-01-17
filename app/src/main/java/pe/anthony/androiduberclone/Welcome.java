@@ -1,9 +1,12 @@
 package pe.anthony.androiduberclone;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 import android.os.Handler;
@@ -152,11 +155,13 @@ public class Welcome extends FragmentActivity
 
     private boolean checkPlayServices() {
 //      Esta funcion es para compromar los play services del dispositivos
-        int resulCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        int resulCode = googleAPI.isGooglePlayServicesAvailable(this);
         if(resulCode != ConnectionResult.SUCCESS){
-            if(GooglePlayServicesUtil.isUserRecoverableError(resulCode)){
-                GooglePlayServicesUtil.getErrorDialog(resulCode,this,PLAY_SERVICE_RES_REQUEST).show();
-            }else{
+            if(googleAPI.isUserResolvableError(resulCode)){
+                googleAPI.getErrorDialog(this, resulCode, PLAY_SERVICE_RES_REQUEST).show();
+            }
+            else{
                 Toast.makeText(this,"This device is not supported",Toast.LENGTH_SHORT).show();
             }
             return false;

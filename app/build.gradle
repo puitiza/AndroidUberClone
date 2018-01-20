@@ -29,6 +29,7 @@ dependencies {
 //    Add new library
     //    Library necesarias de google maps
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
+    implementation 'com.google.android.gms:play-services-location:11.8.0'
     implementation 'com.google.android.gms:play-services:11.8.0'
     //    Library necesarias de geoFire
     compile 'com.firebase:geofire-android:2.2.0'

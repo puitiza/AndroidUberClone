@@ -6,4 +6,9 @@
     <string name="title_activity_welcome">Map</string>
     <string name="online">You are online</string>
     <string name="offline">You are offline</string>
+    <string name="PickUpLocation">Enter Pick up Location</string>
+
+    <!--Voy a explicar esta KEY no es la misma key que se usa para el proyecto porque no me deja utilizar los permisos de Google direction API
+    asi como en tutorial de Android clone Uber parte 03 minuto 35 y te muestra como generas una key especial para este tipo de servicio-->
+    <string name="google_direction_api">AIzaSyAE0FjJRd1ZgcDkqNj71XmPkWLtv1SwkmY</string>
 </resources>

@@ -10,5 +10,5 @@
 
     <!--Voy a explicar esta KEY no es la misma key que se usa para el proyecto porque no me deja utilizar los permisos de Google direction API
     asi como en tutorial de Android clone Uber parte 03 minuto 35 y te muestra como generas una key especial para este tipo de servicio-->
-    <string name="google_direction_api">AIzaSyAE0FjJRd1ZgcDkqNj71XmPkWLtv1SwkmY</string>
+    <string name="google_direction_api">AIzaSyAyaJuhdGMzNnnUwF_lzfmPcymR7eNIF2Y</string>
 </resources>

@@ -240,7 +240,9 @@ public class Welcome extends FragmentActivity
                     if(mCurrent!= null){
                         mCurrent.remove();
                         mMap.clear();
-                        handler.removeCallbacks(drawPathRunnable);
+                        if(handler!=null){
+                            handler.removeCallbacks(drawPathRunnable);
+                        }
                     }
                     Snackbar.make(mapFragment.getView(),R.string.offline,Snackbar.LENGTH_SHORT).show();
                 }

@@ -9,6 +9,12 @@
     <string name="PickUpLocation">Enter Pick up Location</string>
 
     <!--Voy a explicar esta KEY no es la misma key que se usa para el proyecto porque no me deja utilizar los permisos de Google direction API
-    asi como en tutorial de Android clone Uber parte 03 minuto 35 y te muestra como generas una key especial para este tipo de servicio-->
-    <string name="google_direction_api">AIzaSyAyaJuhdGMzNnnUwF_lzfmPcymR7eNIF2Y</string>
+    asi como en tutorial de Android clone Uber parte 03 minuto 35 y te muestra como generas una key especial para este tipo de servicio
+    Sugerencia para generar esa Api la solucion lo vi en el video 04 minuto 10:38 tienes que ir a ENABLE APIS AND SERVICES y en el buscador solo tienes
+     que poner Google Places API for android y tienes que poner enable sino no te va a dejar y te va a salir esta url
+     https://maps.googleapis.com/maps/api/directions/json?mode=driving&transit_routing_preference=less_driving&origin=-11.8484468,-77.1013558&destination=Km.+33.5,+Auxiliar+Panamericana+Nte.,+Puente+Piedra+022,+Peru&key=AIzaSyBpWJiIK5zDyHXUnBcOSOJPYgf7IVzUntc
+     entra a ese sitio web y te vas a dar cuenta lo que me salia pero cuando puse enable google PlACES aPI for android y recuerda ademas tienes que escoger
+     la key  de Browser Key(auto created by Google Services) es key es la unica que si sirve porque la key de google places son soporta para android o IOS
+      solo para webservices-->
+    <string name="google_direction_api">AIzaSyAE0FjJRd1ZgcDkqNj71XmPkWLtv1SwkmY</string>
 </resources>

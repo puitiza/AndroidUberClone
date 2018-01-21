@@ -20,7 +20,7 @@
     Once you have your key (it starts with "AIza"), replace the "google_maps_key"
     string in this file.
     -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBpWJiIK5zDyHXUnBcOSOJPYgf7IVzUntc</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBGzYP9WXM72fzWccsjX-JKPfBRbeg86Yg</string>
     <!--Para generar esa Key solo ve a la URL https://console.developers.google.com/flows/enableapi?apiid=ma... y configura tu proyecto usando
-    el proyecto que creaste en Firebase y ahi mismo genera la KEY-->
+    el proyecto que creaste en Firebase y ahi mismo genera la KEY    AIzaSyBpWJiIK5zDyHXUnBcOSOJPYgf7IVzUntc   -->
 </resources>

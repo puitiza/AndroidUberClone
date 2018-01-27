@@ -119,13 +119,13 @@ public class Welcome extends FragmentActivity
     Runnable drawPathRunnable = new Runnable() {
         @Override
         public void run() {
-            if(index<polyLineList.size()-1){
+            if (index < polyLineList.size()- 1) {
                 index++;
                 next = index+1;
             }
-            if(index<polyLineList.size()-1){
+            if (index < polyLineList.size()- 1) {
                 startPostion = polyLineList.get(index);
-                endPosition = polyLineList.get(index);
+                endPosition = polyLineList.get(next);
             }
             ValueAnimator valueAnimator = ValueAnimator.ofFloat(0,1);
             valueAnimator.setDuration(3000);
@@ -140,11 +140,16 @@ public class Welcome extends FragmentActivity
                     carMarker.setPosition(newPos);
                     carMarker.setAnchor(0.5f,0.5f);
                     carMarker.setRotation(getBearing(startPostion,newPos));
-                    mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(newPos).zoom(15.5f).build()));
+                    mMap.moveCamera(CameraUpdateFactory.newCameraPosition(
+                            new CameraPosition.Builder()
+                                    .target(newPos)
+                                    .zoom(15.5f)
+                                    .build()
+                    ));
                 }
             });
             valueAnimator.start();
-            handler.postDelayed(this,3000);
+            handler.postDelayed(this, 3000);
         }
     };
 
@@ -290,11 +295,12 @@ public class Welcome extends FragmentActivity
                             try{
                                 JSONObject jsonObject = new JSONObject(response.body().toString());
                                 JSONArray jsonArray =  jsonObject.getJSONArray("routes");
-                                for(int i=0;i<jsonArray.length();i++){
+                                for(int i=0;i<jsonArray.length();i++) {
                                     JSONObject route = jsonArray.getJSONObject(i);
                                     JSONObject poly = route.getJSONObject("overview_polyline");
                                     String polyline = poly.getString("points");
                                     polyLineList = decodePoly(polyline);
+                                }
 //                                    Adjusting bounds
                                     LatLngBounds.Builder builder = new LatLngBounds.Builder();
                                     for(LatLng latLng:polyLineList)
@@ -345,7 +351,7 @@ public class Welcome extends FragmentActivity
                                     index= -1;
                                     next=1;
                                     handler.postDelayed(drawPathRunnable,3000);
-                                }
+
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }

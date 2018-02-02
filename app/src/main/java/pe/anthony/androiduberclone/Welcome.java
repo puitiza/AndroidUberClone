@@ -101,18 +101,19 @@ public class Welcome extends FragmentActivity
     private LocationCallback mLocationCallback;
 
     //Car animation
-    private List<LatLng> polyLineList;
-    private  Marker carMarker;
+    private List<LatLng> polyLineList;  //Lista de puntos que sera dado por un Json latitud y longitud
+    private  Marker carMarker;      //El carro que hace el movimiento
     private float v;
     private double lat,lng;
-    private Handler handler;
+    private Handler handler;//There are two main uses for a Handler: (1) to schedule messages and runnables to be executed as some point in the future;
+                            // and (2) to enqueue an action to be performed on a different thread than your own.
     private LatLng startPostion,endPosition,currentPosition;
     private int index,next;
     private Button btnGo;
     private EditText edtPlace;
     private String destination;
-    private PolylineOptions polylineOptions,blackPolylineOptions;
-    private Polyline blackPolyline,greyPolyline;
+    private PolylineOptions polylineOptions,blackPolylineOptions; //Defines options for a polyline
+    private Polyline blackPolyline,greyPolyline; //A polyline is a list of points, where line segments are drawn between consecutive points. A polyline has the following properties :Points, Color and Start/end cap
     private IGoogleAPI mService;
 
 
@@ -192,7 +193,7 @@ public class Welcome extends FragmentActivity
                         mCurrent.remove();
                     }
 
-                    //Place current location marker ... Al crear la activity se va a crear
+                    //Place current location marker ... Al crear la activity se va a crear tu ubicacion
 //                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 //                    MarkerOptions markerOptions = new MarkerOptions();
 //                    markerOptions.position(latLng);
@@ -288,6 +289,10 @@ public class Welcome extends FragmentActivity
                         "destination="+destination+"&"+
                         "key="+getResources().getString(R.string.google_direction_api);
             Log.d("KEY", requestApi);//print the URL for debug
+            /*
+            * enqueue() envía de manera asíncrona la petición y notifica a tu aplicación con un callback cuando una respuesta regresa.
+            * Ya que esta petición es asíncrona, Retrofit maneja la ejecución en el hilo de fondo para que el hilo de la UI principal no sea bloqueada o interfiera con esta.
+            * */
             mService.getPath(requestApi)
                     .enqueue(new Callback<String>() {
                         @Override
@@ -310,12 +315,12 @@ public class Welcome extends FragmentActivity
                                     mMap.animateCamera(mCameraUpdate);
 
                                     polylineOptions= new PolylineOptions();
-                                    polylineOptions.color(Color.GRAY);
-                                    polylineOptions.width(5);
-                                    polylineOptions.startCap(new SquareCap());
-                                    polylineOptions.endCap( new SquareCap());
-                                    polylineOptions.jointType(JointType.ROUND);
-                                    polylineOptions.addAll(polyLineList);
+                                    polylineOptions.color(Color.GRAY); // Establece el color de la polilínea como un color  32-bit ARGB
+                                    polylineOptions.width(5);//Establece el ancho de la polilínea en píxeles de pantalla.
+                                    polylineOptions.startCap(new SquareCap());//Establece el límite en el vértice inicial de la polilínea.
+                                    polylineOptions.endCap( new SquareCap());//Establece el límite en el vértice final de la polilínea. La tapa final predeterminada es ButtCap.
+                                    polylineOptions.jointType(JointType.ROUND);//Establece el tipo de unión para todos los vértices de la polilínea, excepto los vértices de inicio y fin
+                                    polylineOptions.addAll(polyLineList);//Agrega vértices al final de la polilínea que se está construyendo
                                     greyPolyline = mMap.addPolyline(polylineOptions);
 
                                     blackPolylineOptions = new PolylineOptions();
@@ -331,8 +336,8 @@ public class Welcome extends FragmentActivity
                                                         .title("Pickup Location"));
 //                                    Animation
                                     ValueAnimator polyLineAnimator = ValueAnimator.ofInt(0,100);
-                                    polyLineAnimator.setDuration(2000);
-                                    polyLineAnimator.setInterpolator(new LinearInterpolator());
+                                    polyLineAnimator.setDuration(2000);//Establece la duración de la animación
+                                    polyLineAnimator.setInterpolator(new LinearInterpolator());//El interpolador de tiempo utilizado en el cálculo de la fracción transcurrida de esta animación
                                     polyLineAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                         @Override
                                         public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -520,27 +525,6 @@ public class Welcome extends FragmentActivity
         }else {
             Log.d("ERROR","CANNOT GET YOUR LOCATION");
         }
-    }
-
-    private void rotateMarker(final Marker mCurrent, final float i, GoogleMap mMap) {
-        final Handler handler = new Handler();
-        final long start = SystemClock.uptimeMillis();
-        final float startRotation= mCurrent.getRotation();
-        final float duration = 1500;
-
-        final Interpolator interpolator = new LinearInterpolator();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                long elapsed = SystemClock.uptimeMillis() - start;
-                float t = interpolator.getInterpolation((float)elapsed/duration);
-                float rot = t*i+(1-t)*startRotation;
-                mCurrent.setRotation(-rot > 180?rot/2:rot);
-                if (t<1.0){
-                        handler.postDelayed(this,16);
-                }
-            }
-        });
     }
 
     private void startLocationUpdates() {

@@ -66,7 +66,7 @@ public class Home extends AppCompatActivity
     private static int DISPLACEMENT =10; //desplazamiento
 
     DatabaseReference ref;
-    GeoFire geoFire;
+    GeoFire geoFire; //Realtime location queries with Firebase
     Marker mUserMarker;
 
     //Esto es una forma mas reciente de implementar LocationListener solamente se necesita de estas variables
@@ -118,7 +118,8 @@ public class Home extends AppCompatActivity
             }
         };
 
-        //        GeoFire
+//        GeoFire  object is used to read and write geo location data to your Firebase database and to create queries
+//        To create a new GeoFire instance you need to attach it to a Firebase database reference.
         ref = FirebaseDatabase.getInstance().getReference("Riders");
         geoFire = new GeoFire(ref);
         setUpLocation();
@@ -165,6 +166,7 @@ public class Home extends AppCompatActivity
                 final double longitude = mLastLocation.getLongitude();
 
 //                Actualiza en firebase
+//               To check if a write was successfully saved on the server, you can add a GeoFire.CompletionListener to the setLocation call:
                 geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
                     @Override
                     public void onComplete(String key, DatabaseError error) {

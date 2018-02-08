@@ -1,5 +1,6 @@
 package pe.anthony.androiduberclone;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,19 +14,39 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.firebase.geofire.GeoFire;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,OnMapReadyCallback {
 
     SupportMapFragment mapFragment;
 
+    //Location
+    private static final int MY_PERMISSION_REQUEST_CODE = 7000;
+    private static final int PLAY_SERVICE_RES_REQUEST = 7001;
 
+    private LocationRequest mLocationRequest;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+
+    private static int UPDATE_INTERVAL = 5000; //This method sets the rate in milliseconds at which your app prefers to receive location updates
+    private static int FATEST_INTERVAL = 3000; //This method sets the fastest rate in milliseconds at which your app can handle location updates
+    private static int DISPLACEMENT =10; //desplazamiento
+
+    DatabaseReference ref;
+    GeoFire geoFire;
+    Marker mUserMarker;
+    
     //Aqui empieza todo lo que es para el Navigation
     @Override
     protected void onCreate(Bundle savedInstanceState) {

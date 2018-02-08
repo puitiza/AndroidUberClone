@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="PARTNER"
+            android:text="RIDER"
             android:textSize="16sp"
             android:textAlignment="center"
             android:textColor="@android:color/white" />
@@ -37,7 +37,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
-        android:text="LOOKING FOR THE RIDER APP?"
+        android:text="LOOKING FOR THE DRIVER APP?"
         android:textSize="12sp"
         android:textAlignment="center"
         android:textColor="@color/bottomText"

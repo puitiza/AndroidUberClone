@@ -17,4 +17,10 @@
      la key  de Browser Key(auto created by Google Services) es key es la unica que si sirve porque la key de google places son soporta para android o IOS
       solo para webservices-->
     <string name="google_direction_api">AIzaSyAE0FjJRd1ZgcDkqNj71XmPkWLtv1SwkmY</string>
+    <string name="title_activity_home">Home</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

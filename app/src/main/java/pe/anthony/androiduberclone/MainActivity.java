@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import dmax.dialog.SpotsDialog;
+import pe.anthony.androiduberclone.Common.Common;
 import pe.anthony.androiduberclone.Model.Rider;
 import pe.anthony.androiduberclone.Model.User;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 //      Inicializas firebase
         auth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
-        users = db.getReference("Riders");
+        users = db.getReference(Common.user_rider_tbl);
 
 //      Inicializo los view del mainActivity
         btnSignIn = findViewById(R.id.btnSignIn);

@@ -53,6 +53,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import pe.anthony.androiduberclone.Common.Common;
 import pe.anthony.androiduberclone.Helper.CustomInfoWindow;
 import pe.anthony.androiduberclone.Model.Rider;
 
@@ -140,11 +141,6 @@ public class Home extends AppCompatActivity
             }
         };
 
-//        GeoFire  object is used to read and write geo location data to your Firebase database and to create queries
-//        To create a new GeoFire instance you need to attach it to a Firebase database reference.
-        ref = FirebaseDatabase.getInstance().getReference("Riders");
-        geoFire = new GeoFire(ref);
-
         imgExpandable = findViewById(R.id.imgExpandable);
         mBottomSheet = BottomSheetRiderFragment.newInstance("Rider bottom sheet");
         imgExpandable.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +160,7 @@ public class Home extends AppCompatActivity
     }
 
     private void requestPickupHere(String uid) {
-        DatabaseReference dbRequest = FirebaseDatabase.getInstance().getReference("PickupRequest");
+        DatabaseReference dbRequest = FirebaseDatabase.getInstance().getReference(Common.pickup_request_tbl);
         GeoFire mGeoFire = new GeoFire(dbRequest);
         mGeoFire.setLocation(uid,new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()));
         if(mUserMarker.isVisible()){
@@ -183,7 +179,7 @@ public class Home extends AppCompatActivity
     }
 
     private void findDriver() {
-        DatabaseReference drivers = FirebaseDatabase.getInstance().getReference("Drivers");
+        DatabaseReference drivers = FirebaseDatabase.getInstance().getReference(Common.driver_tbl);
         GeoFire gfDrivers = new GeoFire(drivers);
 
         GeoQuery geoQuery = gfDrivers.queryAtLocation(new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()),radius);
@@ -295,7 +291,7 @@ public class Home extends AppCompatActivity
 
     private void loadAllAvailableDriver() {
 //        Load all available Driver in distance 3KM
-        DatabaseReference driverLocation = FirebaseDatabase.getInstance().getReference("Drivers");
+        DatabaseReference driverLocation = FirebaseDatabase.getInstance().getReference(Common.driver_tbl);
         GeoFire gf = new GeoFire(driverLocation);
 
         GeoQuery geoQuery = gf.queryAtLocation(new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()),distance);

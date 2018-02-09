@@ -22,6 +22,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
@@ -38,6 +40,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,6 +48,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import pe.anthony.androiduberclone.Helper.CustomInfoWindow;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,OnMapReadyCallback
@@ -72,6 +77,11 @@ public class Home extends AppCompatActivity
     //Esto es una forma mas reciente de implementar LocationListener solamente se necesita de estas variables
     FusedLocationProviderClient mFusedLocationClient;
     private LocationCallback mLocationCallback;
+
+    //BottomSheet
+    ImageView imgExpandable;
+    BottomSheetRiderFragment mBottomSheet;
+    Button btnPickupRequest;
 
     //Aqui empieza todo lo que es para el Navigation
     @Override
@@ -122,7 +132,41 @@ public class Home extends AppCompatActivity
 //        To create a new GeoFire instance you need to attach it to a Firebase database reference.
         ref = FirebaseDatabase.getInstance().getReference("Riders");
         geoFire = new GeoFire(ref);
+
+        imgExpandable = findViewById(R.id.imgExpandable);
+        mBottomSheet = BottomSheetRiderFragment.newInstance("Rider bottom sheet");
+        imgExpandable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBottomSheet.show(getSupportFragmentManager(),mBottomSheet.getTag());
+            }
+        });
+        btnPickupRequest = findViewById(R.id.btnPickupRequest);
+        btnPickupRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestPickupHere(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            }
+        });
         setUpLocation();
+    }
+
+    private void requestPickupHere(String uid) {
+        DatabaseReference dbRequest = FirebaseDatabase.getInstance().getReference("PickupRequest");
+        GeoFire mGeoFire = new GeoFire(dbRequest);
+        mGeoFire.setLocation(uid,new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()));
+        if(mUserMarker.isVisible()){
+            mUserMarker.remove();
+        }
+        //  add new marker
+        mUserMarker = mMap.addMarker(new MarkerOptions()
+                .title("Pickup here")
+                .snippet("")
+                .position(new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude()))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        mUserMarker.showInfoWindow();
+
+        btnPickupRequest.setText("Getting your DRIVER...");
     }
 
     @Override
@@ -284,6 +328,9 @@ public class Home extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+        mMap.setInfoWindowAdapter(new CustomInfoWindow(this));
     }
 
     @Override

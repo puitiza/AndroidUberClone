@@ -5,6 +5,10 @@ import pe.anthony.androiduberclone.Remote.RetrofitClient;
 import retrofit2.Retrofit;
 
 /**
+ * Driver => Table store information about Location of Driver available
+ * PickupRequest => Table store information about Pickup Request of User
+ * Riders => Table store information about User who register from Rider app
+ * Users =>Table store information about Driver who register from Driver app
  * Created by ANTHONY on 20/01/2018.
  */
 
@@ -13,4 +17,10 @@ public class Common {
     public static IGoogleAPI getGoogleAPI(){
         return RetrofitClient.getClient(baseURL).create(IGoogleAPI.class);
     }
+
+    public static final String driver_tbl ="Drivers";
+    public static final String user_driver_tbl ="DriversInformation";
+    public static final String user_rider_tbl ="RidersInformation";
+    public static final String pickup_request_tbl ="PickupRequest";
+
 }

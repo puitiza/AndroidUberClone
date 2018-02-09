@@ -8,7 +8,7 @@ import retrofit2.Retrofit;
  * Driver => Table store information about Location of Driver available
  * PickupRequest => Table store information about Pickup Request of User
  * Riders => Table store information about User who register from Rider app
- * Users =>Table store information about Driver who register from Driver app
+ * Users (DriversInformation) =>Table store information about Driver who register from Driver app
  * Created by ANTHONY on 20/01/2018.
  */
 

@@ -303,7 +303,7 @@ public class Home extends AppCompatActivity
 //            Use key to get email from table Users
 //            Table Users is table when driver register account and update information
 //            Just open your Driver to check this table name
-                FirebaseDatabase.getInstance().getReference("Users")
+                FirebaseDatabase.getInstance().getReference(Common.user_driver_tbl)
                 .child(key)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -315,7 +315,8 @@ public class Home extends AppCompatActivity
                         mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(location.latitude,location.longitude))
                                 .flat(true)
-                                .title(rider.getPhone())
+                                .title(rider.getName())
+                                .snippet("Phone: "+rider.getPhone())
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.car)));
                     }
 

@@ -2,6 +2,8 @@ package pe.anthony.androiduberclone;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -59,6 +61,7 @@ public class Welcome extends FragmentActivity
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+    private Location mLocationTest;
 
     private static int UPDATE_INTERVAL = 5000; //This method sets the rate in milliseconds at which your app prefers to receive location updates
     private static int FATEST_INTERVAL = 3000; //This method sets the fastest rate in milliseconds at which your app can handle location updates
@@ -86,12 +89,12 @@ public class Welcome extends FragmentActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mLocationCallback = new LocationCallback(){
+       mLocationCallback = new LocationCallback(){
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
                     Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
-                    mLastLocation = location;
+                    //mLastLocation = location;
                     if (mCurrent != null) {
                         mCurrent.remove();
                     }
@@ -119,25 +122,37 @@ public class Welcome extends FragmentActivity
                     mLocationCallback = new LocationCallback(){
                         @Override
                         public void onLocationResult(LocationResult locationResult) {
-                            for (Location location : locationResult.getLocations()) {
-                                Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
-                                mLastLocation = location;
-                                if (mCurrent != null) {
-                                    mCurrent.remove();
+                            if(mLocationTest == null) {
+                                mLocationTest = locationResult.getLastLocation();
+                                //Toast.makeText(getApplicationContext(),"Latitud : "+mLocationTest.getLatitude()+
+                                //      "| Longitud : "+mLocationTest.getLongitude(),Toast.LENGTH_SHORT).show();
+                                AlertDialog.Builder builder = new AlertDialog.Builder(Welcome.this);
+                                builder.setTitle("Longitud : " + mLocationTest.getLongitude() + "\nLatitud : " + mLocationTest.getLatitude());
+                                builder.create();
+                                builder.show();
+
+                                for (Location location : locationResult.getLocations()) {
+                                    Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
+                                    mLastLocation = location;
+                                    if (mCurrent != null) {
+                                        mCurrent.remove();
+                                    }
+
+                                    //Place current location marker ... Al crear la activity se va a crear
+                                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                    MarkerOptions markerOptions = new MarkerOptions();
+                                    markerOptions.position(latLng);
+                                    markerOptions.title("You");
+                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.car));
+                                    mCurrent = mMap.addMarker(markerOptions);
+
+                                    //move map camera
+                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
+                                    //Draw animation rotate marker
+                                    rotateMarker(mCurrent, -360, mMap);
+                                    // Toast.makeText(getApplicationContext(),"Latitud : "+mLastLocation.getLatitude()+
+                                    //         "| Longitud : "+mLastLocation.getLongitude(),Toast.LENGTH_SHORT).show();
                                 }
-
-                                //Place current location marker ... Al crear la activity se va a crear
-                                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                                MarkerOptions markerOptions = new MarkerOptions();
-                                markerOptions.position(latLng);
-                                markerOptions.title("You");
-                                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.car));
-                                mCurrent = mMap.addMarker(markerOptions);
-
-                                //move map camera
-                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15.0f));
-                                //Draw animation rotate marker
-                                rotateMarker(mCurrent,-360,mMap);
                             }
                         }
                     };
@@ -145,6 +160,7 @@ public class Welcome extends FragmentActivity
                     displayLocation();
                     Snackbar.make(mapFragment.getView(),R.string.online,Snackbar.LENGTH_SHORT).show();
                 }else {
+                    mLocationTest = null;
                     stopLocationUpdates();
                     if(mCurrent!= null){
                         mCurrent.remove();
@@ -154,8 +170,8 @@ public class Welcome extends FragmentActivity
             }
         });
 //        GeoFire
-        drivers = FirebaseDatabase.getInstance().getReference("Drivers");
-        geoFire = new GeoFire(drivers);
+        //drivers = FirebaseDatabase.getInstance().getReference("Drivers");
+        //geoFire = new GeoFire(drivers);
         setUpLocation();
     }
 
@@ -252,9 +268,20 @@ public class Welcome extends FragmentActivity
             if (location_switch.isChecked()){
                 final double latitude = mLastLocation.getLatitude();
                 final double longitude = mLastLocation.getLongitude();
-
+                if(mCurrent != null){
+                    mCurrent.remove();//Remove already marker
+                    LatLng latLng = new LatLng(latitude,longitude);
+                    mCurrent = mMap.addMarker(new MarkerOptions()
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
+                            .position(latLng)
+                            .title("You"));
+//                              Move camera to this positon
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15.0f));
+//                              Draw animation rotate marker
+                    rotateMarker(mCurrent,-360,mMap);
+                }
 //                Actualiza en firebase
-                geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
+                /*geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
                     @Override
                     public void onComplete(String key, DatabaseError error) {
 //                        Add Marker
@@ -271,7 +298,7 @@ public class Welcome extends FragmentActivity
                                 rotateMarker(mCurrent,-360,mMap);
                         }
                     }
-                });
+                });*/
             }
         }else {
             Log.d("ERROR","CANNOT GET YOUR LOCATION");
